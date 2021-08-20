@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.luna" name="Luna" version="1.0.0-matrix" provider-name="TheChoconut">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0"/>
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="addon.py">
+    <provides>executable game</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <language>en</language>
+    <summary lang="en_GB">Moonlight Launcher for Kodi</summary>
+    <description lang="en_GB">Luna is a Moonlight Launcher for Kodi. [CR]Use Luna to play games using Nvidia's GameStream protocol. [CR]Resume and quit sessions from Kodi [CR]ZeroTier Support - installation required via entware</description>
+    <assets>
+      <icon>icon.png</icon>
+      <fanart>fanart.jpg</fanart>
+    </assets>
+  </extension>
+</addon>
