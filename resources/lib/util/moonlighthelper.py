@@ -105,7 +105,7 @@ class MoonlightHelper:
         try:
             if showIntro and not isResumeMode:
                 player.play(self.config_helper.addon_path + 'resources/statics/loading.mp4')
-                time.sleep(10)
+                time.sleep(9)
                 player.stop()
 
             subprocess.run([scripts_path + 'prescript.sh', binary_path, codec], cwd=scripts_path, start_new_session=True)

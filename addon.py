@@ -132,7 +132,9 @@ def quitgame():
 def selectLaunchscripts():
     launchscripts = os.listdir(getAddonPath('/resources/launchscripts/'))
     ret = xbmcgui.Dialog().select("Select launch scripts for your configuration", launchscripts)
-    addon.setSettingString('launchscript_conf', launchscripts[ret])
+    if ret != -1:
+        addon.setSettingString('launchscript_conf', launchscripts[ret])
+        os.system('chmod +x ' + getAddonPath('/resources/launchscripts/'+launchscripts[ret])+'/*.sh')
 
 if config_helper.binary_path is None:
     xbmcgui.Dialog().ok("Missing binaries", "Couldn\'t detect moonlight binary.\nPlease check your setup.")

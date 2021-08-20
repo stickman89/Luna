@@ -1,3 +1,5 @@
+#!/usr/bin/sh
+
 killall -STOP kodi.bin
 
 mv logfile logfile.old
