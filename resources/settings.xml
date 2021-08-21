@@ -15,7 +15,7 @@
                 </setting>
                 <setting id="test" type="action" label="30008" help="">
                     <level>0</level>
-                    <data>plugin://$ID/?action=pair_host</data>
+                    <data>RunPlugin(plugin://$ID/?action=pair_host)</data>
                     <control type="button" format="action">
                         <close>true</close>
                     </control>
@@ -145,8 +145,12 @@
                     <default>false</default>
                     <control type="toggle"/>
                 </setting>
-                <setting id="audio_device_parameter" parent="custom_audio_device" type="action" label="30036" help="">
+                <setting id="audio_device_parameter" parent="custom_audio_device" type="string" label="30036" help="">
                     <level>0</level>
+                    <default/>
+                    <constraints>
+                        <allowempty>true</allowempty>
+                    </constraints>
                     <control type="edit" format="string">
                         <heading>30036</heading>
                     </control>
@@ -156,7 +160,7 @@
                 </setting>
                 <setting id="30037" parent="custom_audio_device" type="action" label="30037" help="">
                     <level>0</level>
-                    <data>plugin://$ID/?action=select_audio_device</data>
+                    <data>RunPlugin(plugin://$ID/?action=select_audio_device)</data>
                     <control type="button" format="action">
                     </control>
                     <dependencies>
@@ -232,12 +236,6 @@
                     <data>RunPlugin(plugin://$ID?action=select_launchscripts)</data>
                     <control type="button" format="action">
                         <close>true</close>
-                    </control>
-                </setting>
-                <setting id="30045" type="action" label="30045" help="">
-                    <level>1</level>
-                    <data>RunPlugin(plugin://$ID/?action=delete_key)</data>
-                    <control type="button" format="action">
                     </control>
                 </setting>
                 <setting id="last_run" type="hidden" label="30045" help="">

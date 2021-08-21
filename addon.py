@@ -3,6 +3,7 @@ import subprocess
 
 import sys
 import urllib.parse
+import re
 
 import xbmc
 import xbmcaddon
@@ -129,6 +130,27 @@ def quitgame():
         xbmcgui.Dialog().ok(addon.getLocalizedString(30000), addon.getLocalizedString(30017))
         xbmc.executebuiltin('Container.Refresh')
 
+def selectAudioDevice():
+    device_list = []
+    for line in subprocess.check_output('aplay -l | grep card', encoding='utf-8', shell=True).split('\n'):
+        if line.strip():
+            device_list.append(line)
+
+    audio_device = xbmcgui.Dialog().select('Choose Audio Device', device_list)
+
+    if audio_device != -1:
+        device_name = device_list[audio_device]
+
+        CARDS_REGEX = r'(?:card ?)([^:]*).*(?:device ?)([^:]*)'
+
+        match = re.match(CARDS_REGEX, device_name)
+
+        index1 = match.group(1)
+        index2 = match.group(2)
+
+        audio_parameter = 'hw:' + index1 + ',' + index2
+        addon.setSettingString('audio_device_parameter', audio_parameter)
+
 def selectLaunchscripts():
     launchscripts = os.listdir(getAddonPath('/resources/launchscripts/'))
     ret = xbmcgui.Dialog().select("Select launch scripts for your configuration", launchscripts)
@@ -153,6 +175,10 @@ if 'action' in args:
         resume()
     elif action == 'quit':
         quitgame()
+    elif action == 'pair_host':
+        pair()
+    elif action == 'select_audio_device':
+        selectAudioDevice()
     elif action == 'select_launchscripts':
         selectLaunchscripts()
     elif action == 'settings':
