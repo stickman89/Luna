@@ -42,39 +42,35 @@
                     <level>0</level>
                     <default>1280</default>
                     <constraints>
-                        <options>
-                            <minimum>640</minimum>
-                            <step>10</step>
-                            <maximum>7680</maximum>
-                        </options>
+                        <minimum>640</minimum>
+                        <step>10</step>
+                        <maximum>7680</maximum>
                     </constraints>
                     <dependencies>
                         <dependency type="visible" setting="resolution">Custom</dependency>
                     </dependencies>
-                    <control type="slider" format="integer">
-                        <popup>false</popup>
+                    <control type="edit" format="integer">
+                        <heading>30006</heading>
                     </control>
                 </setting>
                 <setting id="resolution_height" parent="resolution" type="integer" label="30007" help="">
                     <level>0</level>
                     <default>720</default>
                     <constraints>
-                        <options>
-                            <minimum>480</minimum>
-                            <step>10</step>
-                            <maximum>4320</maximum>
-                        </options>
+                        <minimum>480</minimum>
+                        <step>10</step>
+                        <maximum>4320</maximum>
                     </constraints>
                     <dependencies>
                         <dependency type="visible" setting="resolution">Custom</dependency>
                     </dependencies>
-                    <control type="slider" format="integer">
-                        <popup>false</popup>
+                    <control type="edit" format="integer">
+                        <heading>30007</heading>
                     </control>
                 </setting>
                 <setting id="codec" type="string" label="30040" help="">
                     <level>0</level>
-                    <default>sysdefault</default>
+                    <default>h265</default>
                     <constraints>
                         <options>
                             <option label="H.264 (Compatibility)">h264</option>
@@ -87,11 +83,9 @@
                     <level>1</level>
                     <default>20</default>
                     <constraints>
-                        <options>
-                            <minimum>5</minimum>
-                            <step>1</step>
-                            <maximum>100</maximum>
-                        </options>
+                        <minimum>5</minimum>
+                        <step>1</step>
+                        <maximum>100</maximum>
                     </constraints>
                     <control type="slider" format="integer">
                         <popup>false</popup>
@@ -180,11 +174,9 @@
                     <level>0</level>
                     <default>1392</default>
                     <constraints>
-                        <options>
-                            <minimum>256</minimum>
-                            <step>8</step>
-                            <maximum>2048</maximum>
-                        </options>
+                        <minimum>256</minimum>
+                        <step>8</step>
+                        <maximum>2048</maximum>
                     </constraints>
                     <control type="slider" format="integer">
                         <popup>false</popup>
@@ -243,7 +235,6 @@
                 </setting>
                 <setting id="launchscript_conf" type="hidden" label="30045" help="">
                     <level>0</level>
-                    <default></default>
                 </setting>
             </group>
         </category>
