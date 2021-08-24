@@ -1,2 +1,7 @@
-v0.9.0-matrix:
+v1.0.0-matrix:
 -- Initial rework.
+v1.0.1-matrix:
+-- Fix games list scraping algorithm where debug information would be scraped as game.
+-- Improve pairing information: report error in dialog if available.
+-- Blank framebuffers on prescript.sh.
+-- Add missing icons.

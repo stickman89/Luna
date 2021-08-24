@@ -90,7 +90,7 @@ msgid "Successfully quit the game."
 msgstr ""
 
 msgctxt "#30018"
-msgid "Input Map"
+msgid "Failed to get game list from the host. Is the host running?"
 msgstr ""
 
 msgctxt "#30019"

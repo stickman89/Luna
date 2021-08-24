@@ -75,7 +75,7 @@ def quickPlay():
         pair()
         return
     elif games == False:
-        xbmcgui.Dialog().ok(addon.getLocalizedString(30000), addon.getLocalizedString(30017))
+        xbmcgui.Dialog().ok(addon.getLocalizedString(30000), addon.getLocalizedString(30018))
         return
     gameId = xbmcgui.Dialog().select("Select a game", games)    
     if gameId != -1:
@@ -189,3 +189,4 @@ if addon_handle != -1:
 
 del addon
 del logger
+del config_helper

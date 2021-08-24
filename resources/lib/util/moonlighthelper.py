@@ -1,4 +1,3 @@
-import os
 import subprocess
 import threading
 import time
@@ -7,11 +6,11 @@ import re
 import xbmc
 import xbmcgui
 
-from resources.lib.util import confighelper
-
 class MoonlightHelper:
 
     config_helper = None
+    pin_received = False
+    pairing_messages = ""
 
     def __init__(self, plugin, config_helper, logger):
         self.plugin = plugin
@@ -19,23 +18,20 @@ class MoonlightHelper:
         self.logger = logger
 
     def loop_lines(self, logger, iterator, dialog):
-        pin_regex = r'^Please enter the following PIN on the target PC: (\d{4})'
         for line in iterator:
             if line.strip() == "":
                 break
-            if line.strip() == "Succesfully paired":
-                self.pair_success = True
-            match = re.match(pin_regex, line)
-            if match:
-                pin_message = 'Please enter the PIN: %s' % match.group(1)
-                dialog.update(50, pin_message)
-                break
+            if 'enter the following PIN' in line:
+                dialog.update(50, line)
+                self.pin_received = True
+            elif self.pin_received:
+                self.pairing_messages += line.strip() + '\n'
 
     def pair(self):
         binary_path = self.config_helper.binary_path
         self.pair_success = False
         try:
-            pairing_proc = subprocess.Popen([self.config_helper.binary_path + "moonlight", "pair"], cwd=self.config_helper.binary_path, encoding='utf-8', stdout=subprocess.PIPE)
+            pairing_proc = subprocess.Popen([binary_path + "moonlight", "pair"], cwd=binary_path, encoding='utf-8', stdout=subprocess.PIPE)
             lines_iterator = iter(pairing_proc.stdout.readline, "")
             dialog = xbmcgui.DialogProgress()
             dialog.create(
@@ -46,39 +42,37 @@ class MoonlightHelper:
             pairing_thread = threading.Thread(target=self.loop_lines, args=(self.logger, lines_iterator, dialog))
             pairing_thread.start()
 
-            pairing_proc.wait()
+            pairing_proc.wait(timeout=30)
             dialog.close()
-            if self.pair_success:
+            if 'Succesfully paired' in self.pairing_messages:
                 xbmcgui.Dialog().ok(self.plugin.getLocalizedString(30000), 'Pairing successful')
             else:
-                raise Exception('Pairing failed')
-        except:
-            xbmcgui.Dialog().ok(self.plugin.getLocalizedString(30000), 'Pairing failed')
+                raise Exception('Pairing failed or already paired!')
+        except Exception as e:
+            self.pairing_messages = str(e)
+            xbmcgui.Dialog().ok(self.plugin.getLocalizedString(30000), 'Pairing failed:\n' + self.pairing_messages)
 
     def list_games(self):
         binary_path = self.config_helper.binary_path
-        games = []
+        list_regex = r'\d+\.\s+([^\n]*)'
 
         try:
-            moonlightOut = subprocess.check_output(['moonlight', 'list'], cwd=binary_path, encoding='utf-8', start_new_session=True)
-            lines = moonlightOut[:-1].split('\n')
-            if 'must pair' in lines[2]:
+            moonlightOut = subprocess.check_output(['moonlight', 'list'], cwd=binary_path, timeout=5, encoding='utf-8', start_new_session=True)
+
+            if 'must pair' in moonlightOut:
                 return True
-            games = []
-            for i in range(2, len(lines)):
-                games.append(lines[i][3:])
+
+            return re.findall(list_regex, moonlightOut)
         except:
             return False
-        
-        return games
 
     def quit_game(self):
         binary_path = self.config_helper.binary_path
         try:
-            moonlightOut = subprocess.run(['moonlight', 'quit'], cwd=binary_path, start_new_session=True)
+            subprocess.run(['moonlight', 'quit'], cwd=binary_path, timeout=5, start_new_session=True)
         except:
             return False
-        
+
         return True
 
     def launch_game(self, game_id):
@@ -101,7 +95,7 @@ class MoonlightHelper:
         xbmc.executebuiltin("Dialog.Close(busydialog)")
         xbmc.executebuiltin("Dialog.Close(notification)")
         xbmc.executebuiltin("InhibitScreensaver(true)")
-        
+
         try:
             if showIntro and not isResumeMode:
                 player.play(self.config_helper.addon_path + 'resources/statics/loading.mp4')
@@ -109,7 +103,7 @@ class MoonlightHelper:
                 player.stop()
 
             subprocess.run([scripts_path + 'prescript.sh', binary_path, codec], cwd=scripts_path, start_new_session=True)
-            launch_cmd = subprocess.Popen([scripts_path + 'launch.sh', game_id], cwd=binary_path, start_new_session=True)	
+            launch_cmd = subprocess.Popen([scripts_path + 'launch.sh', game_id], cwd=binary_path, start_new_session=True)
             launch_cmd.wait()
             subprocess.run([scripts_path + 'postscript.sh', binary_path], cwd=scripts_path, start_new_session=True)
 

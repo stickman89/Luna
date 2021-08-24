@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.luna" name="Luna" version="1.0.0-matrix" provider-name="TheChoconut">
+<addon id="script.luna" name="Luna" version="1.0.1-matrix" provider-name="TheChoconut">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
   </requires>
